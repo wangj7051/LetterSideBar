@@ -3,14 +3,11 @@ package com.js.sidebar;
 import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.Paint;
-import android.support.annotation.Nullable;
 import android.text.TextUtils;
 import android.util.AttributeSet;
 import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
-
-import com.tr.test.R;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -48,12 +45,12 @@ public class LetterSideBar extends View {
         init(context);
     }
 
-    public LetterSideBar(Context context, @Nullable AttributeSet attrs) {
+    public LetterSideBar(Context context, AttributeSet attrs) {
         super(context, attrs);
         init(context);
     }
 
-    public LetterSideBar(Context context, @Nullable AttributeSet attrs, int defStyleAttr) {
+    public LetterSideBar(Context context, AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
         init(context);
     }
@@ -117,8 +114,14 @@ public class LetterSideBar extends View {
         // 每个字母占有的区域高度
         mStepH = ((float) getMeasuredHeight()) / loop;
         // 每个字母大小
-        final float fontSize = mStepH * 2 / 3;
-        final float fontSizeTouch = mStepH;
+        float fontSize = mStepH * 2 / 3;
+        if (fontSize > 30f) {
+            fontSize = 30f;
+        }
+        float fontSizeTouch = mStepH;
+        if (fontSizeTouch > 40f) {
+            fontSizeTouch = 40f;
+        }
         // 每个字母绘制x坐标
         final float xCom = ((float) getMeasuredWidth()) * 9 / 10;
 
@@ -147,9 +150,9 @@ public class LetterSideBar extends View {
             float x = xCom;
             if (mTouchPos != -1) {
                 switch (Math.abs(mTouchPos - idx)) {
-                    case 3:
-                        x *= 0.85;
-                        break;
+//                    case 3:
+//                        x *= 0.85;
+//                        break;
                     case 2:
                         x *= 0.7;
                         break;
@@ -198,7 +201,7 @@ public class LetterSideBar extends View {
 
         //Get touch position
         float posFloat = touchY / mStepH;
-        mTouchPos = (int) Math.ceil(posFloat);
+        mTouchPos = (int) Math.floor(posFloat);
         //Filter multiply
         if (mLastTouchPos == mTouchPos) {
             return;
